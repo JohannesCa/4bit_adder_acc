@@ -1,3 +1,4 @@
 *.tmp
 *~
-4-bit-acc
+*.pat
+4bit-addacc

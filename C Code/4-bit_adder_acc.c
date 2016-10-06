@@ -122,7 +122,7 @@ struct aluRes SumAcc(int Code[], int A[], int clk, int* aclk)
    aux = Sum_4bit(Code[0] == 0? A : Inv(A), ACC, Code[0]);
    
    if((clk == 1) && (*aclk == 0)){
-      Copy(ACC, Code[1] == 0? A : aux.S);
+      Copy(ACC, Code[1] == 0? (Code[0] == 0? A : Inv(A)) : aux.S);
       aux = Sum_4bit(Code[0] == 0? A : Inv(A), ACC, Code[0]);
    }
 
