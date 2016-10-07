@@ -12,7 +12,7 @@
 
 /***  Global Variables  ***/
 
-static int ones[] = {0,0,0,1};
+static int ones[] = {1,1,1,1};
 static int zero[] = {0,0,0,0};
 
 /***  Main  ***/
@@ -20,14 +20,18 @@ static int zero[] = {0,0,0,0};
 int main(void)
 {
    int selection[2];
-   int** asr;
+   //int** asr;
+   struct result4 a;
    struct aluRes res;
 
    ACC = (int*) malloc(4);
-   asr = (int**) malloc(2);
+   //asr = (int**) malloc(2);
 
-   asr[0] = zero;
-   asr[1] = ones;
+   Copy(a.S, zero);
+   //a.Cout = 0;
+
+   //asr[0] = zero;
+   //asr[1] = ones;
 
    int clk = 0;
    int aclk = 0;
@@ -35,7 +39,6 @@ int main(void)
 
    DEF_GENPAT("4bit-adder-acc-genpat");
    
-   //DECLAR("aclk", ":2", "B", OUT, "","");   
    DECLAR("clk", ":2", "B", IN, "","");
 
    DECLAR("Sel0", ":2", "B", IN, "","");
@@ -56,36 +59,35 @@ int main(void)
    for(int i = 0; i < 2; ++i){
       for(int j = 0; j < 2; ++j){
                   
-         for(int k = 0; k < 2; ++k){
+         for(int k = 0; k < 16; ++k){
             for(clk = 0; clk < 2; ++clk){
-               selection[1] = j;
-               selection[0] = i;
+              	selection[1] = j;
+              	selection[0] = i;
                
-               res = SumAcc(selection, asr[k], clk, &aclk);
+              	res = SumAcc(selection, a.S, clk, &aclk);
 
-               AFFECT(inttostr(cur_vect),"clk", inttostr(clk));
-               //AFFECT(inttostr(cur_vect),"aclk", inttostr(aclk));
-               AFFECT(inttostr(cur_vect),"Sel0", inttostr(selection[0]));
-               AFFECT(inttostr(cur_vect),"Sel1", inttostr(selection[1]));
-               AFFECT(inttostr(cur_vect),"A", inttostr(BinToInt(asr[k])));
-               AFFECT(inttostr(cur_vect),"S", inttostr(res.S));
-               AFFECT(inttostr(cur_vect),"Cout", inttostr(res.Cout));
-               AFFECT(inttostr(cur_vect),"ACC", inttostr(BinToInt(ACC)));
+              	AFFECT(inttostr(cur_vect),"clk", inttostr(clk));
+              	AFFECT(inttostr(cur_vect),"Sel0", inttostr(selection[0]));
+              	AFFECT(inttostr(cur_vect),"Sel1", inttostr(selection[1]));
+              	AFFECT(inttostr(cur_vect),"A", inttostr(BinToInt(a.S)));
+              	AFFECT(inttostr(cur_vect),"S", inttostr(res.S));
+              	AFFECT(inttostr(cur_vect),"Cout", inttostr(res.Cout));
+              	AFFECT(inttostr(cur_vect),"ACC", inttostr(BinToInt(ACC)));
                
                if(selection[0] == 0 && selection[1] == 0)
-                  LABEL("Copy_A");
+               	LABEL("Copy_A");
                else if(selection[0] == 0 && selection[1] == 1)
-                  LABEL("Add_A");
+                 	LABEL("Add_A");
                else if(selection[0] == 1 && selection[1] == 0)
-                  LABEL("Copy_not_A");
-               else if(selection[0] == 1 && selection[1] == 1)
-                  LABEL("Sub_A");
+                 	LABEL("Copy_not_A");
+            	else if(selection[0] == 1 && selection[1] == 1)
+            	  	LABEL("Sub_A");
 
-               aclk = clk;
-               ++cur_vect;
+            	aclk = clk;
+              	++cur_vect;
             }
-         }
-         
+      		a = Sum_4bit(a.S, zero, 1);
+   	   }
       }
    }
 

@@ -61,19 +61,22 @@ int main(void)
 {
    int selection[2];
    //int a[4], b[4];
-   int** asr;
+   //int** asr;
+   struct result4 a;
    struct aluRes res;
 
    ACC = (int*) malloc(4);
-   asr = (int**) malloc(2);
+   //asr = (int**) malloc(2);
 
    printf("CurV\taclk\tclk\tCode\tA\tS\tCout\tACC\n\n");
 
    //Copy(a, zero);
    //Copy(b, ones);
 
-   asr[0] = zero;
-   asr[1] = ones;
+   //asr[0] = zero;
+   //asr[1] = ones;
+
+   Copy(a.S, zero);
 
    int clk = 0;
    int aclk = 0;
@@ -84,15 +87,16 @@ int main(void)
       for(int j = 0; j < 2; ++j){
          selection[1] = j;
          
-         for(int k = 0; k < 2; ++k){
+         for(int k = 0; k < 16; ++k){
             for(clk = 0; clk < 2; ++clk){
-               res = SumAcc(selection, asr[k], clk, &aclk);
-               printf("%i\t%i\t%i\t%i%i\t%i%i%i%i\t%i\t%i\t%i%i%i%i\n", cur_vect, aclk, clk, selection[0], selection[1], asr[k][0], asr[k][1], asr[k][2], asr[k][3], res.S < 8? res.S : res.S-16, res.Cout, ACC[0], ACC[1], ACC[2], ACC[3]);
+               res = SumAcc(selection, a.S, clk, &aclk);
+               printf("%i\t%i\t%i\t%i%i\t%i%i%i%i\t%i\t%i\t%i%i%i%i\n", cur_vect, aclk, clk, selection[0], selection[1], a.S[0], a.S[1], a.S[2], a.S[3], res.S < 8? res.S : res.S-16, res.Cout, ACC[0], ACC[1], ACC[2], ACC[3]);
 
                aclk = clk;
                //clk = !clk;
                ++cur_vect;
             }
+            a = Sum_4bit(a.S, zero, 1);
          }
          
       }
