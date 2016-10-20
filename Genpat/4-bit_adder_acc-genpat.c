@@ -56,11 +56,13 @@ int main(void)
    AFFECT ("0","vdd","0b1");
    AFFECT ("0","vss","0b0");
 
-   for(int i = 0; i < 2; ++i){
-      for(int j = 0; j < 2; ++j){
+   int i = 0, j = 0, k = 0;
+
+   for(; i < 2; ++i){
+      for(; j < 2; ++j){
                   
-         for(int k = 0; k < 16; ++k){
-            for(clk = 0; clk < 2; ++clk){
+         for(; k < 16; ++k){
+            for(; clk < 2; ++clk){
               	selection[1] = j;
               	selection[0] = i;
                
